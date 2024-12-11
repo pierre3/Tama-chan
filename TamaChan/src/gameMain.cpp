@@ -117,7 +117,7 @@ int WINAPI WinMain(HINSTANCE hInstance ,HINSTANCE hPrevlnstance,
 	if(dwColor!=8){
 		ZeroMemory(&dm,sizeof(dm));
 		dm.dmSize=sizeof(dm);
-		dm.dmBitsPerPel=8;//256色モード
+		dm.dmBitsPerPel=32;//256色モード
 		dm.dmFields=DM_BITSPERPEL;
 		if(SUCCEEDED(ChangeDisplaySettings(&dm,CDS_TEST)))//一度テストする
 		{
@@ -172,7 +172,7 @@ int WINAPI WinMain(HINSTANCE hInstance ,HINSTANCE hPrevlnstance,
 	}
 
 	
-	if(!mdsPlay("mds\\ryuu.mds",TRUE))
+	if(!mdsPlay(const_cast<char*>("mds\\ryuu.mds"),TRUE))
 	{
 		ReleaseDS();
 		

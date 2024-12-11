@@ -325,7 +325,7 @@ BOOL MyCharOut(_DDRAW *lpDDraw,_CHAR *lpChar,_BGSCROLL*lpBgScrl,WORD wInputData)
 {
 		
 	_CHAR* lpMyChar=NULL;
-	static nYSpd =-0x98000;
+	static int nYSpd =-0x98000;
 	RECT rcSrc;
 	lpMyChar=lpChar + CHAR_MAX;
 	
@@ -395,7 +395,7 @@ BOOL GameOver(_DDRAW *lpDDraw,_CHAR *lpChar,_BGSCROLL*lpBgScrl,WORD wInputData)
 		}
 	}
 	//////////////////////////////////////////////////////
-	if(!mdsPlay("mds\\gover.mds",FALSE))
+	if(!mdsPlay(const_cast<char*>("mds\\gover.mds"),FALSE))
 				return(FALSE);
 	//*************************************************
 	//ビットマップの表示
@@ -466,7 +466,7 @@ BOOL GameClear(_DDRAW *lpDDraw,_CHAR *lpChar,_BGSCROLL*lpBgScrl,WORD wInputData)
 			return(ToTitle());
 		}
 	}
-	if(!mdsPlay("mds\\gclear.mds",FALSE))
+	if(!mdsPlay(const_cast<char*>("mds\\gclear.mds"),FALSE))
 				return(FALSE);
 	//*************************************************
 	//ビットマップの表示
@@ -547,7 +547,7 @@ BOOL ToTitle()
 	DSoundPlay(SOUND_PAUSE);
 	nGameStatus |=GSTATE_TITLE;
 	mdsStop();
-	if(!mdsPlay("mds\\opning.mds",TRUE))
+	if(!mdsPlay(const_cast<char*>("mds\\opning.mds"),TRUE))
 		return(FALSE);
 	
 	return(TRUE);
@@ -581,7 +581,7 @@ BOOL GameStart(_CHAR* lpChar)
 	
 	//BGM再生
 	mdsStop();
-	if(!mdsPlay("mds\\q2.mds",TRUE))
+	if(!mdsPlay(const_cast<char*>("mds\\q2.mds"),TRUE))
 		return(FALSE);
 
 	//ゲームステータスフラグ切り替え

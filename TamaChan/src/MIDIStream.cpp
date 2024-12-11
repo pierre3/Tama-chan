@@ -204,7 +204,7 @@ BOOL mdsOpen(LPSTR lpszFileName){
 				&midiStream.hMidiStream,//デバイスハンドルの取得
 				&uiID,				//デバイスIDの指定
 				1,					//１に予約
-				(DWORD)StreamProc,//ストリーム用プロシージャ
+				(DWORD_PTR)StreamProc,//ストリーム用プロシージャ
 				0,
 				CALLBACK_FUNCTION);//コールバック関数としてストリーム用プロシージャを使用
 	if(mmResult!=MMSYSERR_NOERROR){
@@ -340,7 +340,7 @@ BOOL mdsStop(){
 	}
 	
 	//ブロックデータ用メモリの解放
-	for(i=0;i<midiStream.dwMaxBlockCount;i++)
+	for(int i=0;i<midiStream.dwMaxBlockCount;i++)
 	{
 		GlobalFree(midiStream.lpMidiHdr[i].lpData);
 	}
