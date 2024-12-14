@@ -37,7 +37,7 @@ typedef struct tagMIDISTREAM{
 //////////////////////////////////////////////////////////////////////////
 BOOL mdsLoad(LPSTR);
 BOOL mdsOpen(LPSTR);
-void CALLBACK StreamProc(HMIDIIN ,UINT,DWORD,DWORD,DWORD);
+void CALLBACK StreamProc(HMIDIIN ,UINT,DWORD,DWORD_PTR,DWORD);
 
 extern BOOL mdsPlay(LPSTR,BOOL);//çƒê∂
 extern BOOL mdsStop();//í‚é~

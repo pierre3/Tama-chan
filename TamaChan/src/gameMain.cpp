@@ -114,10 +114,10 @@ int WINAPI WinMain(HINSTANCE hInstance ,HINSTANCE hPrevlnstance,
 	//カラーモードを調べる-256色に切り替える_______________________________
 	dwColor=GetDeviceCaps(hDeviceDC,BITSPIXEL);
 	DeleteDC(hDeviceDC);
-	if(dwColor!=8){
+	if(dwColor!=BPP){
 		ZeroMemory(&dm,sizeof(dm));
 		dm.dmSize=sizeof(dm);
-		dm.dmBitsPerPel=32;//256色モード
+		dm.dmBitsPerPel=BPP;
 		dm.dmFields=DM_BITSPERPEL;
 		if(SUCCEEDED(ChangeDisplaySettings(&dm,CDS_TEST)))//一度テストする
 		{

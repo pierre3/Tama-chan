@@ -105,7 +105,7 @@ BOOL _DDRAW::DDCreateWin() {
 	//BackBuffer
 	//---------------------------------------------------
 	//バックバッファの作成
-	if (!DDCreateOffScreen(&lpDDBK, 238, SCREEN_W, SCREEN_H,
+	if (!DDCreateOffScreen(&lpDDBK, 0, 0, 0, SCREEN_W, SCREEN_H,
 		DDSCAPS_VIDEOMEMORY)) {
 		return(FALSE);
 	}
@@ -248,7 +248,9 @@ void _DDRAW::DDReleaseFull() {
 //オフスクリーンサーフィスの作成
 //********************************************************************
 BOOL _DDRAW::DDCreateOffScreen(LPDIRECTDRAWSURFACE* lplpDDOF,
-	DWORD dwColorKey,
+	BYTE colorKeyR,
+	BYTE colorKeyG,
+	BYTE colorKeyB,
 	DWORD dwWidth,
 	DWORD dwHeight,
 	DWORD dwMemoryFlag)
@@ -257,6 +259,7 @@ BOOL _DDRAW::DDCreateOffScreen(LPDIRECTDRAWSURFACE* lplpDDOF,
 	HRESULT			err;
 	DDSURFACEDESC	ddsd;
 	DDCOLORKEY		ddck;
+	DWORD			dwColorKey;
 
 	//オフスクリーンサーフィスの設定
 	ZeroMemory(&ddsd, sizeof(ddsd));
@@ -275,6 +278,7 @@ BOOL _DDRAW::DDCreateOffScreen(LPDIRECTDRAWSURFACE* lplpDDOF,
 		return(FALSE);
 	}
 
+	dwColorKey = RgbToDword(*lplpDDOF, colorKeyR, colorKeyG, colorKeyB);
 	//オフスクリーンサーフィスにカラーキーを設定
 	ddck.dwColorSpaceLowValue = dwColorKey;
 	ddck.dwColorSpaceHighValue = dwColorKey;
@@ -451,15 +455,15 @@ BOOL _DDRAW::ChangeScreenMode()
 BOOL _DDRAW::SetBitmap()
 {
 	//オフスクリーンサーフィスの作成____________
-	if (!DDCreateOffScreen(&lpDDOF[OFFSCRN_CHAR], COLOR_KEY, OFFSCREEN_W,
+	if (!DDCreateOffScreen(&lpDDOF[OFFSCRN_CHAR], COLOR_KEY_R, COLOR_KEY_G, COLOR_KEY_B, OFFSCREEN_W,
 		OFFSCREEN_H, DDSCAPS_VIDEOMEMORY)) {
 		return(FALSE);
 	}
-	if (!DDCreateOffScreen(&lpDDOF[OFFSCRN_GOVER], COLOR_KEY, OFF_GOVER_W,
+	if (!DDCreateOffScreen(&lpDDOF[OFFSCRN_GOVER], COLOR_KEY_R, COLOR_KEY_G, COLOR_KEY_B, OFF_GOVER_W,
 		OFF_GOVER_H, DDSCAPS_VIDEOMEMORY)) {
 		return(FALSE);
 	}
-	if (!DDCreateOffScreen(&lpDDOF[OFFSCRN_TITLE], COLOR_KEY, OFF_TITLE_W,
+	if (!DDCreateOffScreen(&lpDDOF[OFFSCRN_TITLE], COLOR_KEY_R, COLOR_KEY_G, COLOR_KEY_B, OFF_TITLE_W,
 		OFF_TITLE_H, DDSCAPS_VIDEOMEMORY)) {
 		return(FALSE);
 	}
@@ -518,6 +522,43 @@ void _DDRAW::VRAMCheck() {
 	TextOut(hdc, 0, 100, str, lstrlen(str));
 
 	lpDDBK->ReleaseDC(hdc);
-
-
 }
+
+DWORD tagDDRAW::RgbToDword(LPDIRECTDRAWSURFACE lpDDPR, BYTE r, BYTE g, BYTE b)
+{
+	DWORD
+		dwRBits = 0,
+		dwGBits = 0,
+		dwBBits = 0,
+		dwR = 0,
+		dwG = 0,
+		dwB = 0,
+		dwRMask = 0,
+		dwGMask = 0,
+		dwBMask = 0;
+	DDSURFACEDESC ddsdPR;
+
+	ZeroMemory(&ddsdPR, sizeof(ddsdPR));
+	ddsdPR.dwSize = sizeof(ddsdPR);
+	lpDDPR->GetSurfaceDesc(&ddsdPR);
+	
+	dwRMask = ddsdPR.ddpfPixelFormat.dwRBitMask;
+	dwGMask = ddsdPR.ddpfPixelFormat.dwGBitMask;
+	dwBMask = ddsdPR.ddpfPixelFormat.dwBBitMask;
+
+	for (int i = 0; i < 32; i++)
+	{
+		dwRBits += (dwRMask >> i) & 1;
+		dwGBits += (dwGMask >> i) & 1;
+		dwBBits += (dwBMask >> i) & 1;
+	}
+	r = r >> (8 - dwRBits);
+	g = g >> (8 - dwGBits);
+	b = b >> (8 - dwBBits);
+	dwR = ((DWORD)r) << (dwGBits + dwBBits);
+	dwG = ((DWORD)g) << dwBBits;
+	dwB = ((DWORD)b);
+
+	return(dwR | dwG | dwB);
+}
+
