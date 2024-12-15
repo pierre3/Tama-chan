@@ -12,6 +12,7 @@
 - DirectX 12
 
 # 珍獣ハンターTama_Chan
+[![demo](https://img.youtube.com/vi/aeewvT8_F_A/0.jpg)](https://www.youtube.com/watch?v=aeewvT8_F_A)
 
 ## 動作環境
 - OS：windows98以降
