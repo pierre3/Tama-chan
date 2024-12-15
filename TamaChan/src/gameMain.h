@@ -177,54 +177,54 @@
 
 //キャラクタ
 
-typedef struct tagHITCHK{
-	int nHitW,nHitH;
-	RECT rcHit,rcHitOld;
+typedef struct tagHITCHK {
+	int nHitW, nHitH;
+	RECT rcHit, rcHitOld;
 }_HITCHK;
-					 
-typedef struct tagCHAR{
-	int		nXDsp,nYDsp,//表示用座標
-			nXPos,nYPos,//計算用座標
-			nDashSPD,//ダッシュ移動量（マイキャラのみ使用）
-			nXSPD,nYSPD,//移動量
-			nMapX,nMapY;//bgDataとして再配置する時の配置位置（ブロックのみ使用）
+
+typedef struct tagCHAR {
+	int		nXDsp, nYDsp,//表示用座標
+		nXPos, nYPos,//計算用座標
+		nDashSPD,//ダッシュ移動量（マイキャラのみ使用）
+		nXSPD, nYSPD,//移動量
+		nMapX, nMapY;//bgDataとして再配置する時の配置位置（ブロックのみ使用）
 	RECT	rcSrc;//オフスクリーン上のビットマップ座標
 	_HITCHK	hitChk;//当り判定用
 	BOOL	fLive,//存在しているか
-			fDraw,//表示するか
-			fWait;//移動処理の一時停止
+		fDraw,//表示するか
+		fWait;//移動処理の一時停止
 	BYTE	nType,//キャラのタイプ
-			nStatus,nStatusOld,//キャラの状態
-			nLife;
+		nStatus, nStatusOld,//キャラの状態
+		nLife;
 	WORD	wAnimeCnt,//表示絵のフレーム数をカウント
-			wPiyoCnt,//ピヨリフレーム数をカウント
-			wCageCnt;
+		wPiyoCnt,//ピヨリフレーム数をカウント
+		wCageCnt;
 	BYTE	nAnimeIndex;//表示する絵の指定
 	WORD	wCharNum;//chDataの何番目の要素か、要素番号を入れておく
 }_CHAR;
 
 
 //ゲームデータ
-typedef struct tagGAMEDATA{
-	
+typedef struct tagGAMEDATA {
+
 	HWND				hwnd;/*ウインドウのハンドル*/
 	HINSTANCE			hInst;/*インスタンスハンドル*/
 	RECT				rcClient;/*クライアント領域の矩形座標*/
-	BOOL				fActive;/*ウインドウがアクティブか*/	
+	BOOL				fActive;/*ウインドウがアクティブか*/
 }_GAMEDATA;
 
 
 
 //スクロールデータ
-typedef struct tagBGSCROLL{
-	
-	int		nBgX,nBgY,//スクロール座標
-			nXAdj,nYAdj,//スクロール座標の修正値
-							/*(スクロール座標)/(BGチップのサイズ)の剰余*/
-			nXMin,nYMin,//スクロール座標の最小値
-			nXMax,nYMax;//スクロール座標の最大値
-	WORD	wXIndex,wYIndex;//bgData配列での要素番号
-							/*(スクロール座標)/(BGチップのサイズ)の整数部（.以下切り捨て）*/
+typedef struct tagBGSCROLL {
+
+	int		nBgX, nBgY,//スクロール座標
+		nXAdj, nYAdj,//スクロール座標の修正値
+		/*(スクロール座標)/(BGチップのサイズ)の剰余*/
+		nXMin, nYMin,//スクロール座標の最小値
+		nXMax, nYMax;//スクロール座標の最大値
+	WORD	wXIndex, wYIndex;//bgData配列での要素番号
+	/*(スクロール座標)/(BGチップのサイズ)の整数部（.以下切り捨て）*/
 }_BGSCROLL;
 
 

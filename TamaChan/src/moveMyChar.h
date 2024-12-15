@@ -16,11 +16,11 @@
 //プロトタイプ宣言
 //************************************************
 //マイキャラを動かす関数
-void MyCharMove(_CHAR*,_BGSCROLL*,WORD);
+void MyCharMove(_CHAR*, _BGSCROLL*, WORD);
 
 //移動量を決める関数
-void MCNormalMove(_CHAR*,WORD);
-void MCStepMove(_CHAR*,WORD);
+void MCNormalMove(_CHAR*, WORD);
+void MCStepMove(_CHAR*, WORD);
 
 
 

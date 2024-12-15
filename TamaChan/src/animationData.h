@@ -9,7 +9,7 @@
 //構造体の定義
 //*****************************
 //アニメーションデータ
-typedef struct tagACTDATA{
+typedef struct tagACTDATA {
 	RECT	rcSrc;//画像データ
 	WORD	wAnimeCntMax;//画像を続けて表示するフレーム数
 	BYTE	nAnimeIndexMax;//1パターンのアニメーションで使用する画像の枚数

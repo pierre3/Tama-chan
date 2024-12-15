@@ -24,8 +24,8 @@
 //***************************************************
 //DirectSound構造体
 //***************************************************
-typedef struct tagDSOUND{
-	
+typedef struct tagDSOUND {
+
 	LPDIRECTSOUND		lpDS;
 	LPDIRECTSOUNDBUFFER lpDSPrm;
 	LPDIRECTSOUNDBUFFER lpDSSec[SOUND_MAX + 1];
@@ -34,7 +34,7 @@ typedef struct tagDSOUND{
 	//セカンダリバッファを作成し、Waveデータを読み込む
 	BOOL LoadWave(LPSTR,	/*引数１：読み込むファイル名*/
 		LPDIRECTSOUNDBUFFER*);/*引数２：セカンダリバッファへのポインタのアドレス*/
-			
+
 }_DSOUND;
 extern void DSoundPlay(BYTE);
 extern void DSoundClear();

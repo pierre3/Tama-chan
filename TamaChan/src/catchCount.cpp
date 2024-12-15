@@ -4,7 +4,7 @@
 /////////////////////////////////////
 //ƒOƒ[ƒoƒ‹•Ï”
 /////////////////////////////////////
-BYTE nCatchCount=0;
+BYTE nCatchCount = 0;
 //////////////////////////////////////////////////
 //ŸB‚É•ß‚ç‚¦‚½“G‚Ì”‚ğ”‚¦‚é
 /////////////////////////////////////////////////
@@ -23,7 +23,7 @@ void CatchCountEscape()
 //0‚É‰Šú‰»
 void CatchCountZero()
 {
-	nCatchCount=0;
+	nCatchCount = 0;
 }
 //nCatchCount‚ğæ“¾‚·‚é
 BYTE GetCatchCount()

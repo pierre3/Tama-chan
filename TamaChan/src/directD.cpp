@@ -8,7 +8,6 @@ BOOL _DDRAW::DDCreateWin() {
 	//グローバル変数
 	HRESULT			err;
 	DDSURFACEDESC	ddsd;
-	PALETTEENTRY	ape[256];
 	HDC				hdc;
 	//---------------------------------------
 	//DD_Object
@@ -49,32 +48,7 @@ BOOL _DDRAW::DDCreateWin() {
 			"エラーメッセージ", MB_OK | MB_ICONSTOP);
 		return(FALSE);
 	}
-	//-----------------------------------------------------
-	//Palette_Object
-	//---------------------------------------------------
-	//システムパレットの設定
-	//hdc = GetDC(gData.hwnd);
-	//SetSystemPaletteUse(hdc, SYSPAL_STATIC);
-	//GetSystemPaletteEntries(hdc, 0, 256, ape);
-	//ReleaseDC(gData.hwnd, hdc);
 
-	////パレットオブジェクトの作成
-	//err = lpDD->CreatePalette(
-	//	DDPCAPS_8BIT,
-	//	ape, &lpDDPL, NULL);
-	//if (err != DD_OK) {
-	//	MessageBox(gData.hwnd, "パレットオブジェクトの作成に失敗",
-	//		"エラーメッセージ", MB_OK | MB_ICONSTOP);
-	//	return(FALSE);
-	//}
-
-	////プライマリサーフィスにパレットを設定する
-	//err = lpDDPR->SetPalette(lpDDPL);
-	//if (err != DD_OK) {
-	//	MessageBox(gData.hwnd, "パレットの設定に失敗",
-	//		"エラーメッセージ", MB_OK | MB_ICONSTOP);
-	//	return(FALSE);
-	//}
 	//-------------------------------------------------------
 	//Clipper_Object
 	//-------------------------------------------------------
@@ -120,7 +94,6 @@ BOOL _DDRAW::DDCreateFull() {
 	HRESULT			err;
 	DDSURFACEDESC	ddsd;
 	DDSCAPS			caps;
-	PALETTEENTRY    ape[256];
 	HDC				hdc;
 	DWORD			dwResult = 0;
 	//---------------------------------------------------
@@ -200,32 +173,6 @@ BOOL _DDRAW::DDCreateFull() {
 			"エラーメッセージ", MB_OK | MB_ICONSTOP);
 		return(FALSE);
 	}
-	//--------------------------------------------------------
-	//Palette_Object
-	//--------------------------------------------------------
-	//システムパレットの設定
-	//hdc = GetDC(gData.hwnd);
-	//SetSystemPaletteUse(hdc, SYSPAL_STATIC);
-	//GetSystemPaletteEntries(hdc, 0, 256, ape);
-	//ReleaseDC(gData.hwnd, hdc);
-
-	////パレットオブジェクトの作成
-	//err = lpDD->CreatePalette(
-	//	DDPCAPS_8BIT | DDPCAPS_ALLOW256,
-	//	ape, &lpDDPL, NULL);
-	//if (err != DD_OK) {
-	//	MessageBox(gData.hwnd, "パレットオブジェクトの作成に失敗",
-	//		"エラーメッセージ", MB_OK | MB_ICONSTOP);
-	//	return(FALSE);
-	//}
-
-	////プライマリサーフィスにパレットを設定する
-	//err = lpDDPR->SetPalette(lpDDPL);
-	//if (err != DD_OK) {
-	//	MessageBox(gData.hwnd, "パレットの設定に失敗",
-	//		"エラーメッセージ", MB_OK | MB_ICONSTOP);
-	//	return(FALSE);
-	//}
 
 	return(TRUE);
 }
@@ -303,13 +250,8 @@ BOOL _DDRAW::DDLoadBmp(LPDIRECTDRAWSURFACE* lplpDDOF,
 	DWORD dwWidth,
 	DWORD dwHeight)
 {
-
 	HDC	hdc, hMemDC;
 	HBITMAP	hBitmap;
-	RGBQUAD rgb[256];
-	PALETTEENTRY ape[256];
-	HRESULT err;
-	register DWORD i;
 
 	//ビットマップを読み込む
 	hdc = GetDC(gData.hwnd);
@@ -320,34 +262,6 @@ BOOL _DDRAW::DDLoadBmp(LPDIRECTDRAWSURFACE* lplpDDOF,
 	SelectObject(hMemDC, hBitmap);
 	ReleaseDC(gData.hwnd, hdc);
 
-	////ビットマップのパレットデータを
-	//	//パレットオブジェクトに反映させる
-	//GetDIBColorTable(hMemDC,
-	//	dwStartingEntry,
-	//	dwCount,
-	//	&rgb[dwStartingEntry]
-	//);
-
-	//for (i = dwStartingEntry; i < (dwStartingEntry + dwCount); i++) {
-	//	ape[i].peRed = rgb[i].rgbRed;
-	//	ape[i].peGreen = rgb[i].rgbGreen;
-	//	ape[i].peBlue = rgb[i].rgbBlue;
-	//	ape[i].peFlags = PC_RESERVED | PC_NOCOLLAPSE;
-	//}
-	//ビットマップからのパレットデータを登録
-	/*err = lpDDPL->SetEntries(
-		0,
-		dwStartingEntry,
-		dwCount,
-		&ape[dwStartingEntry]
-	);
-
-	if (err != DD_OK) {
-		MessageBox(gData.hwnd, "パレットデータの登録に失敗",
-			"エラーメッセージ", MB_OK | MB_ICONSTOP);
-		return(FALSE);
-	}*/
-
 	//ビットマップをオフスクリーンサーフィスに転送
 	(*lplpDDOF)->GetDC(&hdc);
 	BitBlt(hdc, dwXDest, dwYDest, dwWidth, dwHeight,
@@ -356,7 +270,7 @@ BOOL _DDRAW::DDLoadBmp(LPDIRECTDRAWSURFACE* lplpDDOF,
 	(*lplpDDOF)->ReleaseDC(hdc);
 	DeleteObject(hBitmap);
 	DeleteDC(hMemDC);
-	memcpy(ape2, ape, sizeof(PALETTEENTRY) * 256);
+
 	return(TRUE);
 }
 
@@ -524,40 +438,56 @@ void _DDRAW::VRAMCheck() {
 	lpDDBK->ReleaseDC(hdc);
 }
 
+//DDSurfaceのPixelFormatのBitMask値を見てRGB値からDWORD値を組み立てる
 DWORD tagDDRAW::RgbToDword(LPDIRECTDRAWSURFACE lpDDPR, BYTE r, BYTE g, BYTE b)
 {
 	DWORD
-		dwRBits = 0,
-		dwGBits = 0,
-		dwBBits = 0,
-		dwR = 0,
-		dwG = 0,
-		dwB = 0,
-		dwRMask = 0,
-		dwGMask = 0,
-		dwBMask = 0;
-	DDSURFACEDESC ddsdPR;
+		dwRBits = 0, dwGBits = 0, dwBBits = 0,
+		dwR = 0, dwG = 0, dwB = 0,
+		dwRMask = 0, dwGMask = 0, dwBMask = 0;
+	int
+		nRStart = -1, nGStart = -1, nBStart = -1,
+		bRBitOn = FALSE, bGBitOn = FALSE, bBBitOn = FALSE;
 
+	DDSURFACEDESC ddsdPR;
 	ZeroMemory(&ddsdPR, sizeof(ddsdPR));
 	ddsdPR.dwSize = sizeof(ddsdPR);
 	lpDDPR->GetSurfaceDesc(&ddsdPR);
-	
+
 	dwRMask = ddsdPR.ddpfPixelFormat.dwRBitMask;
 	dwGMask = ddsdPR.ddpfPixelFormat.dwGBitMask;
 	dwBMask = ddsdPR.ddpfPixelFormat.dwBBitMask;
 
 	for (int i = 0; i < 32; i++)
 	{
-		dwRBits += (dwRMask >> i) & 1;
-		dwGBits += (dwGMask >> i) & 1;
-		dwBBits += (dwBMask >> i) & 1;
+		bRBitOn = (dwRMask >> i) & 1;
+		bGBitOn = (dwGMask >> i) & 1;
+		bBBitOn = (dwBMask >> i) & 1;
+		if (bRBitOn) {
+			if (nRStart == -1) {
+				nRStart = i;
+			}
+			dwRBits++;
+		}
+		if (bGBitOn) {
+			if (nGStart == -1) {
+				nGStart = i;
+			}
+			dwGBits++;
+		}
+		if (bBBitOn) {
+			if (nBStart == -1) {
+				nBStart = i;
+			}
+			dwBBits++;
+		}
 	}
 	r = r >> (8 - dwRBits);
 	g = g >> (8 - dwGBits);
 	b = b >> (8 - dwBBits);
-	dwR = ((DWORD)r) << (dwGBits + dwBBits);
-	dwG = ((DWORD)g) << dwBBits;
-	dwB = ((DWORD)b);
+	dwR = ((DWORD)r) << nRStart;
+	dwG = ((DWORD)g) << nGStart;
+	dwB = ((DWORD)b) << nBStart;
 
 	return(dwR | dwG | dwB);
 }
