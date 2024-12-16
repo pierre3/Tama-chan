@@ -16,7 +16,7 @@
 
 > [!Note]
 > - youtube動画にリンクしています（音声注意）。
-> - タイトル画像は[Gork](https://help.x.com/ja/using-x/about-grok)で生成したものです。
+> - タイトル画像は[Gork](https://help.x.com/ja/using-x/about-grok)に生成してもらったものに差し替えました:)
 
 ## 動作環境
 - OS：windows98以降
