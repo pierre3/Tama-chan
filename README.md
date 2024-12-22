@@ -12,11 +12,15 @@
 - DirectX 12
 
 # 珍獣ハンターTama_Chan
-[![demo](https://img.youtube.com/vi/aeewvT8_F_A/0.jpg)](https://www.youtube.com/watch?v=aeewvT8_F_A)
+![珍獣ハンターTaMa_Chan 2024_12_22 11_20_45](https://github.com/user-attachments/assets/9f0b9fe9-bdd2-42ee-8a2d-361c29603628)
 
+[![demo](https://img.youtube.com/vi/aeewvT8_F_A/0.jpg)](https://www.youtube.com/watch?v=aeewvT8_F_A)
 > [!Note]
 > - youtube動画にリンクしています（音声注意）。
 > - タイトル画像は[Gork](https://help.x.com/ja/using-x/about-grok)に生成してもらったものに差し替えました:)
+
+
+
 
 ## 動作環境
 - OS：windows98以降
